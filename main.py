@@ -26,7 +26,7 @@ if __name__ == '__main__':
             yield
 
     repeat(blob.animate(), 1)
-    # repeat(do_shit(), 100)
+    repeat(do_shit(), 100)
 
     mainloop()
 
