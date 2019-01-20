@@ -4,7 +4,7 @@ import random
 from blob import Blob
 from account import Account
 
-def repeat(iterator, sleep_ms=10):
+def repeat(iterator, sleep_ms):
     next(iterator)
     root.after(sleep_ms, repeat, iterator, sleep_ms)
 
@@ -19,15 +19,16 @@ if __name__ == '__main__':
 
     blob = Blob(root, cv, root_size)
 
-    def do_shit(acc):
-        acc.update()
-        yield
+    def do_shit(a):
+        while True:
+            a.update()
+            yield
 
     DEFAULT_ACCOUNT_ID = '5c43b4ca322fa06b677943fc'
-    repeat(blob.animate(), 1)
+    repeat(blob.animate(), 10)
+
     acc = Account(DEFAULT_ACCOUNT_ID)
+
+
     repeat(do_shit(acc), 5000)
-
     mainloop()
-
-    a = Account()
