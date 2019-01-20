@@ -4,9 +4,12 @@ import random
 from blob import Blob
 from account import Account
 
-def repeat(iterator, sleep_ms):
+def repeat(iterator, sleep_ms=10, idle=False):
     next(iterator)
-    root.after(sleep_ms, repeat, iterator, sleep_ms)
+    if idle:
+        root.after_idle(repeat, iterator)
+    else:
+        root.after(sleep_ms, repeat, iterator, sleep_ms)
 
 if __name__ == '__main__':
 
@@ -30,5 +33,5 @@ if __name__ == '__main__':
     acc = Account(DEFAULT_ACCOUNT_ID)
 
 
-    repeat(do_shit(acc), 5000)
+    repeat(do_shit(acc), 0, idle=True)
     mainloop()
