@@ -27,5 +27,9 @@ class Account:
                                                             self.acctnumber,
                                                             self.money)
 
-acc = Account(DEFAULT_ACCOUNT_ID)
-data = acc.get_purchases()
+if __name__ == '__main__':
+    acc = Account(DEFAULT_ACCOUNT_ID)
+    data = acc.get_purchases()
+
+    for thing in data:
+        print(thing)
