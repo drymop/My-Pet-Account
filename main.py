@@ -1,33 +1,33 @@
 from tkinter import *
 from PIL import Image, ImageTk
-
+import random
 from blob import Blob
-
 
 def repeat(iterator, sleep_ms=10):
     next(iterator)
     root.after(sleep_ms, repeat, iterator, sleep_ms)
 
-root = Tk()
-root_size = (600, 600)
-root.title('My pet account')
-cv = Canvas(root, width=root_size[0], height=root_size[1], bg='white')      
-cv.pack(expand=YES, fill=BOTH)  
-root.resizable(False, False)
+if __name__ == '__main__':
 
-blob = Blob(root, cv, root_size)
+    root = Tk()
+    root_size = (600, 600)
+    root.title('My pet account')
+    cv = Canvas(root, width=root_size[0], height=root_size[1], bg='white')
+    cv.pack(expand=YES, fill=BOTH)
+    root.resizable(False, False)
 
-def do_shit():
-    color = ['g', 'r', 'y']
-    speed = [1, 0.3]
-    motion = [1, 0.3]
-    while True:
-        for m, s in zip(motion, speed):
-            blob.set_motion_range(m)
-            blob.set_speed(s)
+    blob = Blob(root, cv, root_size)
+
+    def do_shit():
+        color = ['g', 'r', 'y']
+        while True:
+            c = random.randint(0,2)
+            blob.set_color(color[c])
             yield
-            
-repeat(blob.animate(), 10)
-repeat(do_shit(), 3000)
 
-mainloop()
+    repeat(blob.animate(), 1)
+    # repeat(do_shit(), 100)
+
+    mainloop()
+
+    a = Account()

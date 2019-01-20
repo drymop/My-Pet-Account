@@ -22,5 +22,10 @@ class Account:
         data = requests.get(self.acc_url + '/purchases', params={'key': API_KEY}).json()
         return data
 
+    def __str__(self):
+        info = '\tname: {}\n\tif: {}\n\tbalance: {}'.format(self.name,
+                                                            self.acctnumber,
+                                                            self.money)
+
 acc = Account(DEFAULT_ACCOUNT_ID)
 data = acc.get_purchases()
