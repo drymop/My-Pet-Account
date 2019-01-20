@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 import random
 from blob import Blob
+from account import Account
 
 def repeat(iterator, sleep_ms=10):
     next(iterator)
@@ -18,15 +19,14 @@ if __name__ == '__main__':
 
     blob = Blob(root, cv, root_size)
 
-    def do_shit():
-        color = ['g', 'r', 'y']
-        while True:
-            c = random.randint(0,2)
-            blob.set_color(color[c])
-            yield
+    def do_shit(acc):
+        acc.update()
+        yield
 
+    DEFAULT_ACCOUNT_ID = '5c43b4ca322fa06b677943fc'
     repeat(blob.animate(), 1)
-    # repeat(do_shit(), 100)
+    acc = Account(DEFAULT_ACCOUNT_ID)
+    repeat(do_shit(acc), 5000)
 
     mainloop()
 

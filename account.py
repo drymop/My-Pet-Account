@@ -29,6 +29,7 @@ class Account:
     def update(self):
         new_deltas = {end_point: handler() for end_point, handler in self.handlers.items()}
         self.deltas = new_deltas
+        print(self.deltas)
 
     def _get_account_info(self):
         data = requests.get(self.acc_url, params={'key': API_KEY}).json()
