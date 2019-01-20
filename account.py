@@ -6,29 +6,45 @@ DEFAULT_ACCOUNT_ID = '5c43b4ca322fa06b677943fc'
 ACCOUNT_URL = 'http://api.reimaginebanking.com/accounts/{id}'
 
 class Account:
+    data = None
+
     def __init__(self, account_id):
         self._id = account_id
         self.acc_url = ACCOUNT_URL.format(id=self._id)
+        self.data = dict()
+
+        # for attr in ['deposits', 'withdrawals', 'purchases']:
+        #     self.data[attr] = self[attr]
 
     def _get_account_info(self):
         data = requests.get(self.acc_url, params={'key': API_KEY}).json()
-        return data
-
-    def get_deposits(self):
-        data = requests.get(self.acc_url + '/deposits', params={'key': API_KEY}).json()
-        return data
-
-    def get_withdrawals(self):
-        data = self._get('withdrawals')
         return data
 
     def _get(self, what):
         data = requests.get(self.acc_url + '/{}'.format(what), params={'key': API_KEY}).json()
         return data
 
-    def get_purchases(self):
-        data = requests.get(self.acc_url + '/purchases', params={'key': API_KEY}).json()
-        return data
+    def __getitem__(self, key):
+        try:
+            return self.data[key]
+        except KeyError:
+            self[key] = self._get(key)
+            return self[key]
+
+    def __setitem__(self, key, val):
+        self.data[key] = val
+
+    # def get_deposits(self):
+    #     data = requests.get(self.acc_url + '/deposits', params={'key': API_KEY}).json()
+    #     return data
+    #
+    # def get_withdrawals(self):
+    #     data = self._get('withdrawals')
+    #     return data
+    #
+    # def get_purchases(self):
+    #     return self._get('purchases')
+
 
     def __str__(self):
         info = '\tname: {}\n\tif: {}\n\tbalance: {}'.format(self.name,
@@ -38,9 +54,9 @@ class Account:
 if __name__ == '__main__':
     acc = Account(DEFAULT_ACCOUNT_ID)
 
-    pur = acc.get_purchases()
-    wid = acc.get_withdrawals()
-    dep = acc.get_deposits()
+    pur = acc['purchases']
+    wid = acc['withdrawals']
+    dep = acc['deposits']
 
     for what in [pur, wid, dep]:
         try:
