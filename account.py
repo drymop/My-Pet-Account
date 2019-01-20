@@ -18,6 +18,14 @@ class Account:
         data = requests.get(self.acc_url + '/deposits', params={'key': API_KEY}).json()
         return data
 
+    def get_withdrawals(self):
+        data = self._get('withdrawals')
+        return data
+
+    def _get(self, what):
+        data = requests.get(self.acc_url + '/{}'.format(what), params={'key': API_KEY}).json()
+        return data
+
     def get_purchases(self):
         data = requests.get(self.acc_url + '/purchases', params={'key': API_KEY}).json()
         return data
@@ -29,7 +37,15 @@ class Account:
 
 if __name__ == '__main__':
     acc = Account(DEFAULT_ACCOUNT_ID)
-    data = acc.get_purchases()
 
-    for thing in data:
-        print(thing)
+    pur = acc.get_purchases()
+    wid = acc.get_withdrawals()
+    dep = acc.get_deposits()
+
+    for what in [pur, wid, dep]:
+        try:
+            for thing in what:
+                print(thing)
+        except TypeError:
+            raise
+        print('\n\n')
