@@ -19,12 +19,15 @@ blob = Blob(root, cv, root_size)
 
 def do_shit():
     color = ['g', 'r', 'y']
+    speed = [1, 0.3]
+    motion = [1, 0.3]
     while True:
-        for c in color:
-            blob.set_color(c)
+        for m, s in zip(motion, speed):
+            blob.set_motion_range(m)
+            blob.set_speed(s)
             yield
             
 repeat(blob.animate(), 10)
-repeat(do_shit(), 2000)
+repeat(do_shit(), 3000)
 
 mainloop()
