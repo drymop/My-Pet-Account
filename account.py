@@ -11,7 +11,7 @@ class Account:
     def __init__(self, account_id):
         self._id = account_id
         self.acc_url = ACCOUNT_URL.format(id=self._id)
-        self.data = dict()
+        # self.data = dict()
 
         # for attr in ['deposits', 'withdrawals', 'purchases']:
         #     self.data[attr] = self[attr]
@@ -25,14 +25,7 @@ class Account:
         return data
 
     def __getitem__(self, key):
-        try:
-            return self.data[key]
-        except KeyError:
-            self[key] = self._get(key)
-            return self[key]
-
-    def __setitem__(self, key, val):
-        self.data[key] = val
+        return self._get(key)
 
     # def get_deposits(self):
     #     data = requests.get(self.acc_url + '/deposits', params={'key': API_KEY}).json()
