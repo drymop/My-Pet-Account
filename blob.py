@@ -8,7 +8,7 @@ class Blob:
     H_BOUND = (200, 600)
     H_RANGE = 400
     BASE_HALF_CYCLE = 20
-    
+
     def __init__(self, gui_root, canvas, cv_size, speed=1):
         self.gui_root = gui_root
         self.cv = canvas
@@ -52,7 +52,8 @@ class Blob:
         while True:
             # recalculate all parameters
             half_cycle = int(Blob.BASE_HALF_CYCLE / self.speed)
-    
+
+            print('INFO: half cycle {}'.format(half_cycle))
 
             self.w_bound = (Blob.W_BOUND[0], Blob.W_BOUND[0] - self.motion_range * Blob.W_RANGE)
             self.h_bound = (Blob.H_BOUND[0], Blob.H_BOUND[0] + self.motion_range * Blob.H_RANGE)

@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 import random
 from blob import Blob
+import math
 from account import Account
 
 def repeat(iterator, sleep_ms=10, idle=False):
@@ -22,9 +23,26 @@ if __name__ == '__main__':
 
     blob = Blob(root, cv, root_size)
 
-    def do_shit(a):
+    def do_shit(a, blob):
         while True:
-            a.update()
+            m, b, bal = a.update()
+            if m == 0:
+                m += 1e-3
+            print('m: {}; b: {}; bal: {}'.format(m,b,bal))
+            blob.set_size(math.log(bal)/10)
+            # blob.set_speed(m)
+            if m > 5:
+                blob.set_color('g')
+                blob.set_motion_range(1)
+                blob.set_speed(1)
+            elif m < -5:
+                blob.set_color('r')
+                blob.set_motion_range(0.2)
+                blob.set_speed(0.2)
+            else:
+                blob.set_color('y')
+                blob.set_motion_range(0.8)
+                blob.set_speed(0.8)
             yield
 
     DEFAULT_ACCOUNT_ID = '5c43b4ca322fa06b677943fc'
@@ -33,5 +51,5 @@ if __name__ == '__main__':
     acc = Account(DEFAULT_ACCOUNT_ID)
 
 
-    repeat(do_shit(acc), 0, idle=True)
+    repeat(do_shit(acc, blob), 10000)
     mainloop()
