@@ -2,7 +2,9 @@ from collections import namedtuple
 import requests
 from datetime import datetime
 from pprint import pprint as pp
-
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error as mse
 
 API_KEY = 'd7d2263e1acab85c1f6020b064745864'
 DEFAULT_ACCOUNT_ID = '5c43b4ca322fa06b677943fc'
@@ -30,6 +32,31 @@ class Account:
         new_deltas = {end_point: handler() for end_point, handler in self.handlers.items()}
         self.deltas = new_deltas
         print(self.deltas)
+        m, b = self.handle_data(self.deltas)
+        return m, b, self._get_account_info()['balance']
+
+    def handle_data(self, deltas):
+        concat = [item for sublist in deltas.values() for item in sublist]
+        # concat = concat[len(concat)/2:]
+        concat.sort(key=lambda item: item.date)
+        current = 0
+        now = datetime.now().timestamp()
+        x, y = [], []
+        for item in concat:
+            current += item.amount
+            x.append((item.date.timestamp()-now)/8e4)
+            y.append(float(current))
+
+        x, y = np.array(x).reshape(-1, 1), np.array(y).reshape(-1, 1)
+
+        print(x,y)
+
+        reg = LinearRegression()
+        reg.fit(X=x, y=y)
+
+        [[m]], [b] = reg.coef_, reg.intercept_
+
+        return m, b
 
     def _get_account_info(self):
         data = requests.get(self.acc_url, params={'key': API_KEY}).json()
