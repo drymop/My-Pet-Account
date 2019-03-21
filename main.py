@@ -29,7 +29,7 @@ if __name__ == '__main__':
             if m == 0:
                 m += 1e-3
             print('m: {}; b: {}; bal: {}'.format(m,b,bal))
-            blob.set_size(math.log(bal)/10)
+            # blob.set_size(math.log(bal)/10)
             # blob.set_speed(m)
             if m > 5:
                 blob.set_color('g')
@@ -46,10 +46,10 @@ if __name__ == '__main__':
             yield
 
     DEFAULT_ACCOUNT_ID = '5c43b4ca322fa06b677943fc'
-    repeat(blob.animate(), 10)
 
     acc = Account(DEFAULT_ACCOUNT_ID)
 
 
     repeat(do_shit(acc, blob), 10000)
+    repeat(blob.animate(), 10)
     mainloop()
